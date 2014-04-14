@@ -6,7 +6,16 @@ import task1.DTMC;
 import task2.CTMC;
 
 public class GSPN {
-
+	
+	
+	public static double throuput(ArrayList<ArrayList<Double>> trMat, ArrayList<Double> state, ArrayList<Transition> transitions) {
+		double throuput = 0.0;
+		for (Transition transition : transitions) {
+			throuput += trMat.get(transition.from).get(transition.to)*state.get(transition.from);
+		}
+		return throuput;
+	}
+	
 	/**
 	 * @param args
 	 */
@@ -55,6 +64,21 @@ public class GSPN {
 		DTMC.printStates(states);
 		
 		System.out.println( 100 - 100*states.get(states.size() - 1).get(states.get(states.size() - 1).size() - 1));
+		
+		ArrayList<Transition> transitions = new ArrayList<Transition>();
+		
+		transitions.add(new Transition(1, 2));
+		
+		System.out.println(throuput(trMat, states.get(8), transitions));
+		
+		
+		ArrayList<Transition> transitions2 = new ArrayList<Transition>();
+		
+		transitions2.add(new Transition(0, 3));
+		transitions2.add(new Transition(1, 3));
+		transitions2.add(new Transition(2, 3));
+		
+		System.out.println(throuput(trMat, states.get(12), transitions2));
 		
 	}
 
