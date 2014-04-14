@@ -1,5 +1,7 @@
 package task4;
 
+import java.util.Random;
+
 
 public class ProxelTask {
 	
@@ -290,33 +292,128 @@ public class ProxelTask {
 	            temp = temp.healthy;
 	            dir1  = State.Healthy;
 	        }
-	        /* choose right/left at random */
-	        else if ((temp.right != NULL) && (temp->left != NULL))
-	        {
-	            if (rand() > RAND_MAX/2)
+	        /* choose  at random */
+	        else if ((temp.first != null) && (temp.second != null)  && (temp.third == null) && (temp.healthy != null))
+	        {	
+	        	Random random1 = new Random();
+	        	int randd = random1.nextInt(10);
+	            if (randd < 4)
 	            {
 	                old  = temp;
-	                temp = temp->left;
-	                dir  = LEFT;
+	                temp = temp.first;
+	                dir1  = State.Stage1;
+	            }
+	            else if (randd < 8)
+	            {
+	                old  = temp;
+	                temp = temp.second;
+	                dir1  = State.Stage2;
+	            }
+	            else {
+	                old  = temp;
+	                temp = temp.healthy;
+	                dir1  = State.Healthy;	            	
+	            }
+	        }
+	        else if((temp.first != null) && (temp.second != null)  && (temp.third == null) && (temp.healthy == null)) {
+	        	Random random1 = new Random();
+	        	int randd = random1.nextInt(10);
+	            if (randd < 6)
+	            {
+	                old  = temp;
+	                temp = temp.first;
+	                dir1  = State.Stage1;
 	            }
 	            else
 	            {
 	                old  = temp;
-	                temp = temp->right;
-	                dir  = RIGHT;
+	                temp = temp.second;
+	                dir1  = State.Stage2;
+	            }
+	        }
+	        else if((temp.first != null) && (temp.second == null)  && (temp.third == null) && (temp.healthy != null)) {
+	        	Random random1 = new Random();
+	        	int randd = random1.nextInt(10);
+	            if (randd < 6)
+	            {
+	                old  = temp;
+	                temp = temp.first;
+	                dir1  = State.Stage1;
+	            }
+	            else
+	            {
+	                old  = temp;
+	                temp = temp.healthy;
+	                dir1  = State.Healthy;
+	            }
+	        }
+	        else if ((temp.first == null) && (temp.second != null)  && (temp.third != null) && (temp.healthy != null))
+	        {	
+	        	Random random1 = new Random();
+	        	int randd = random1.nextInt(10);
+	            if (randd < 4)
+	            {
+	                old  = temp;
+	                temp = temp.first;
+	                dir1  = State.Stage1;
+	            }
+	            else if (randd < 8)
+	            {
+	                old  = temp;
+	                temp = temp.third;
+	                dir1  = State.Stage3;
+	            }
+	            else {
+	                old  = temp;
+	                temp = temp.healthy;
+	                dir1  = State.Healthy;	            	
+	            }
+	        }
+	        else if((temp.first == null) && (temp.second != null)  && (temp.third != null) && (temp.healthy == null)) {
+	        	Random random1 = new Random();
+	        	int randd = random1.nextInt(10);
+	            if (randd < 6)
+	            {
+	                old  = temp;
+	                temp = temp.third;
+	                dir1  = State.Stage3;
+	            }
+	            else
+	            {
+	                old  = temp;
+	                temp = temp.second;
+	                dir1  = State.Stage2;
+	            }
+	        }
+	        else if((temp.first == null) && (temp.second == null)  && (temp.third != null) && (temp.healthy != null)) {
+	        	Random random1 = new Random();
+	        	int randd = random1.nextInt(10);
+	            if (randd < 6)
+	            {
+	                old  = temp;
+	                temp = temp.third;
+	                dir1  = State.Stage3;
+	            }
+	            else
+	            {
+	                old  = temp;
+	                temp = temp.healthy;
+	                dir1  = State.Healthy;
 	            }
 	        }
 	        else
 	            cont = 0;
 	    }
 	    if (temp == root[1-sw])
-	        root[1-sw] = NULL;
+	        root[1-sw] = null;
 	    else
 	    {
-	        if (dir == RIGHT)
-	            old->right = NULL;
-	        else
-	            old->left  = NULL;
+	    	switch(dir1){
+	    		case Stage1: old.first = null; break;
+	    		case Stage2: old.second= null; break;
+	    		case Stage3: old.third = null; break;
+	    		case Healthy: old.healthy = null; break;	    			
+	    	}
 	    }
 	    old = firstfree;
 	    firstfree = temp;
@@ -326,33 +423,31 @@ public class ProxelTask {
 	}
 
 	/* get a fresh proxel and copy data into it */
-	proxel *insertproxel(int s, int tau1k, int tau2k, double val) {
-	    proxel *temp;
+	Proxel insertproxel(int s, int tau1k, int tau2k, double val) {
+	    Proxel temp = new Proxel();
 
 	    /* create new proxel or grab one from free list */
-	    if (firstfree == NULL)
-	        temp = malloc(sizeof(proxel));
-	    else {
+	    if (firstfree != null)
 	        temp = firstfree;
-	        firstfree = firstfree->right;
+	        firstfree = firstfree.right;
 	    }
 	    /* copy values */
-	    temp->id    = state2id(s, tau1k, tau2k);
-	    temp->s     = s;
-	    temp->tau1k = tau1k;
-	    temp->tau2k = tau2k;
-	    temp->val   = val;
+	    temp.id    = state2id(s, tau1k, tau2k);
+	    temp.s     = s;
+	    temp.tau1k = tau1k;
+	    temp.tau2k = tau2k;
+	    temp.val   = val;
 	    ccpcnt     += 1;
 	    if (maxccp < ccpcnt) {
 	        maxccp = ccpcnt;
 	        //printf("\n ccpcnt=%d",ccpcnt);
 	    }
-	    return(temp);
+	    return temp;
 	}
 
 	/* adds a new proxel to the tree */
 	void addproxel(int s, int tau1k, int tau2k, double val) {
-	    proxel *temp, *temp2;
+	    Proxel temp, temp2;
 	    int cont = 1,id;
 
 	    /* Alarm! TAUMAX overstepped! */
@@ -363,10 +458,12 @@ public class ProxelTask {
 
 
 	    /* New tree, add root */
-	    if (root[sw] == NULL) {
+	    if (root[sw] == null) {
 	        root[sw] = insertproxel(s,tau1k, tau2k, val);
-	        root[sw]->left = NULL;
-	        root[sw]->right = NULL;
+	        root[sw].first = null;
+	        root[sw].second = null;
+	        root[sw].third = null;
+	        root[sw].healthy = null;
 	        return;
 	    }
 
@@ -409,6 +506,115 @@ public class ProxelTask {
 	        return;
 	    }
 	    printf("\n\n\n!!!!!! addproxel failed !!!!!\n\n\n");
+	}
+	
+	
+	/********************************************************/
+	/*	model specific distribtuions	                    */
+	/********************************************************/
+
+
+	/* INSTANTANEOUS RATE FUNCTIONs */
+	double first2second(double age) {
+	    return unihrf(age, 2, 4);
+	    //return exphrf(age, 1/10);
+	}
+	
+	double second2third(double age) {
+	    //return unihrf(age, 0.25, .5);
+	    return exphrf(age, 1/10);
+	}
+	
+	double toHealthy(double age) {
+		return unihrf(age, 7, 14);
+	}
+
+	/********************************************************/
+	/*  main processing loop                                */
+	/********************************************************/
+
+	public static void main(String[] args)  {
+	    int     k, j, kmax;
+	    Proxel currproxel;
+	    double  val, z;
+	    int     s, tau1k; //, tau2k;
+
+	    /* initialise the simulation */
+	    root[0] = NULL;
+	    root[1] = NULL;
+	    eerror=0.0;
+	    totcnt  = 0;
+	    maxccp  = 0;
+		double tmax = ENDTIME;
+	    dt = DELTA;
+	    kmax=tmax/dt+1;
+	    for (k = 0; k < 3; k++) {
+	        y[k] = malloc(sizeof(double)*(kmax+2));
+	        for (j = 0; j < kmax+2; j++) 
+	        	y[k][j] = 0.0;
+	    }
+	    TAUMAX = tmax/dt+1;
+	 
+	    /* set initial proxel */
+	    addproxel(SUNNY, 0, 0, 1.0);
+	    
+	    /* first loop: iteration over all time steps*/
+	    for (k = 1; k <= kmax+1; k++) {
+	        
+	        //if(k==79 || k==78) printtree(root[sw]);
+	        
+	         //printf("\nSTEP %d\n",k);
+	        /* current model time is k*dt */
+	        
+	        /* print progress information */
+	        if (k%100==0)  {
+	            printf("\nSTEP %d\n",k);
+	            printf("Size of tree %d\n",size(root[sw]));
+	        }
+	        
+	        sw = 1 - sw;
+
+	        /* second loop: iterating over all proxels of a time step */
+	        while (root[1-sw] != NULL)
+	        {
+	            totcnt++;
+	            currproxel = getproxel();
+	            while ((currproxel->val < MINPROB) && (root[1-sw] != NULL)) {
+	                val=currproxel->val;
+	                eerror += val;
+	                currproxel = getproxel();
+	            }
+	            val        = currproxel->val;
+	            tau1k      = currproxel->tau1k;
+	            /*tau2k      = currproxel->tau2k;*/
+	            s          = currproxel->s;
+	            y[s][k-1] += val;
+	            
+	            /* create child proxels */
+	            switch (s) {
+	                case SUNNY:
+	                	z = dt*sunny2cloudy(tau1k*dt);
+	                	if (z < 1.0) {
+		                    addproxel(CLOUDY,       0, 0, val*z);
+		                    addproxel(SUNNY,  tau1k+1, 0, val*(1-z));
+	                	} else
+	                		addproxel(CLOUDY,       0, 0, val);
+	                    break;
+	                case CLOUDY : 
+	                	z = dt * cloudy2sunny(tau1k*dt);
+	                	if (z < 1.0) {
+		                    addproxel(SUNNY,        0, 0, val*z);
+	    	                addproxel(CLOUDY, tau1k+1, 0, val*(1-z));
+	                	} else 
+	                		addproxel(SUNNY,        0, 0, val);
+	            }
+	        }
+	    }
+	    printf("error = %7.5le\n", eerror);
+	    printf("ccpx = %d\n", maxccp);
+	    printf("count = %d\n", totcnt);
+	    //plotsolution(kmax);
+	    return(0);
 	}
 }
 
