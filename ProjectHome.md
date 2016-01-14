@@ -1,0 +1,1 @@
+Applied Discrete Modeling Assignments, OVGU university
